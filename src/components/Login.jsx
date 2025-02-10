@@ -1,18 +1,25 @@
 import axios from "axios";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     try {
-        const data = await axios.post("http://localhost:3001/login", {emailId: email, password: password}, {withCredentials: true});
-        console.log('data', data)   
+      const res = await axios.post(
+        "http://localhost:3001/login",
+        { emailId: email, password: password },
+        { withCredentials: true }
+      );
+      dispatch(addUser(res.data));
     } catch (error) {
-        console.error(error)
+      console.error(error);
     }
-  }
+  };
   return (
     <div className="flex justify-center my-10">
       <div className="card bg-base-300 w-96 shadow-sm">
@@ -91,7 +98,9 @@ const Login = () => {
             </p>
           </div>
           <div className="card-actions justify-center">
-            <button className="btn btn-primary" onClick={() => handleLogin()}>Login</button>
+            <button className="btn btn-primary" onClick={() => handleLogin()}>
+              Login
+            </button>
           </div>
         </div>
       </div>
