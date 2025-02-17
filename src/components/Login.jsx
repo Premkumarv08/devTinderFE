@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState("");
 
   const handleLogin = async () => {
     try {
@@ -21,7 +22,7 @@ const Login = () => {
       dispatch(addUser(res.data));
       return navigate("/");
     } catch (error) {
-      console.error(error);
+      setError(error?.response?.data || "Something went wrong!");
     }
   };
   return (
@@ -101,6 +102,7 @@ const Login = () => {
               At least one uppercase letter
             </p>
           </div>
+          <p className="text-red-500">{error}</p>
           <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={() => handleLogin()}>
               Login
